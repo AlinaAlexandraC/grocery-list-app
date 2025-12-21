@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Groceries</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <form action="" method="post" class="item-submission">
+      <div class="item-input-container">
+        <label for="item-name">Add an item to the list:</label>
+        <input
+          type="text"
+          name="item-name"
+          id="item-name"
+          placeholder="Your item here..."
+        />
+        <input type="number" class="item-quantity" placeholder="Quantity...">
+        <small class="input-error">Please enter a valid item.</small>
+      </div>
+      <button class="add-item">Add to List</button>
+    </form>
+    <div class="list-container">
+        <h2>My Grocery List</h2>
+        <ul class="list">
+        </ul>
+    </div>
+  </body>
+</html>
