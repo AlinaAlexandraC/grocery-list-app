@@ -4,28 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Groceries</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
     <script src="script.js" defer></script>
   </head>
   <body>
     <form action="" method="post" class="item-submission">
-      <div class="item-input-container">
-        <label for="item-name">Add an item to the list:</label>
+      <label for="item-name">Item name:</label>
+      <div class="item-name-container">
         <input
           type="text"
           name="item-name"
           id="item-name"
           placeholder="Your item here..."
         />
-        <input type="number" class="item-quantity" placeholder="Quantity...">
         <small class="input-error">Please enter a valid item.</small>
+      </div>
+      <label for="item-quantity">Item quantity:</label>
+      <div id="item-quantity-container">
+        <input type="number" id="item-quantity" placeholder="Quantity..." />
+        <select id="select-unit">
+          <option value="" selected disabled hidden>Select unit...</option>
+        </select>
       </div>
       <button class="add-item">Add to List</button>
     </form>
     <div class="list-container">
-        <h2>My Grocery List</h2>
-        <ul class="list">
-        </ul>
+      <h2>My Grocery List</h2>
+      <ul class="list"></ul>
     </div>
   </body>
 </html>

@@ -2,23 +2,31 @@
 
 .item-submission {
   width: 500px;
-}
-
-.item-input-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
-.item-input-container input {
-  height: 2rem;
+.item-name-container,
+#item-quantity-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.item-submission input,
+#select-unit {
+  box-sizing: border-box;
+  height: 2.5rem;
   border-radius: 6px;
   text-indent: 8px;
+  border: 1px solid;
+  flex: 1;
 }
 
 .add-item {
   height: 2.5rem;
   width: 150px;
+  border-radius: 6px;
   display: block;
   margin: 1rem auto;
 }
@@ -63,12 +71,18 @@ input.error {
   width: 100%;
 }
 
-.list-element-info label {
+.list-name-container {
   display: flex;
   gap: 8px;
 }
 
 /* ACTIONS */
+
+button[data-action="save"] {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
 
 /* DROPDOWNS */
 
@@ -111,4 +125,31 @@ input.error {
 img {
   width: 25px;
   margin: 0 1rem;
+}
+
+/* TOGGLE EDITING MODE */
+
+/* NOT EDITING */
+
+.edit-item-name,
+.edit-item-quantity,
+.edit-item-unit,
+button[data-action="save"] {
+  display: none;
+}
+
+/* EDITING */
+
+.is-editing .item-name,
+.is-editing .item-quantity,
+.is-editing .item-unit,
+.is-editing .dropdown {
+  display: none;
+}
+
+.is-editing .edit-item-name,
+.is-editing .edit-item-quantity,
+.is-editing .edit-item-unit,
+.is-editing button[data-action="save"] {
+  display: flex;
 }
