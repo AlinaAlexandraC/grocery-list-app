@@ -37,7 +37,7 @@ let listArray = [
     name: "Carrots",
     quantity: 8,
     unit: "g",
-    completed: false,
+    completed: true,
   },
 ];
 
@@ -72,7 +72,9 @@ const renderList = () => {
     const listElementInfo = `
     <div class="list-element-info">     
       <div class="list-name-container">
-        <input type="checkbox" id="item-${item.id}" name="item-${item.id}"/>
+        <input type="checkbox" id="item-${item.id}" name="item-${item.id}" ${
+      item.completed ? "checked" : ""
+    }/>
         <label for="item-${item.id}" class="item-name">${item.name}</label>
       </div>   
       <input
@@ -120,6 +122,12 @@ const renderList = () => {
     const inlineSelectUnit = listElement.querySelector(".edit-item-unit");
 
     populateUnits(inlineSelectUnit);
+
+    if (item.completed) {
+      listElement.classList.add("checked");
+    } else {
+      listElement.classList.remove("checked");
+    }
 
     list.append(listElement);
   });
@@ -221,6 +229,18 @@ list.addEventListener("click", (e) => {
   }
 });
 
+// Close edit mode when clicking outside the element/ on another item
+
+document.addEventListener("click", (e) => {
+  const editingItem = document.querySelector(".is-editing");
+
+  if (!editingItem || editingItem.contains(e.target)) {
+    return;
+  }
+
+  editingItem.classList.remove("is-editing");
+});
+
 // Save edits
 
 list.addEventListener("click", (e) => {
@@ -247,7 +267,6 @@ list.addEventListener("click", (e) => {
       itemFound.unit !== inputUnitValue;
 
     if (!isItemUpdated) {
-      console.log("item not updated");
       itemToSave.classList.remove("is-editing");
 
       return;
@@ -263,9 +282,24 @@ list.addEventListener("click", (e) => {
   }
 });
 
+// Cross item if checked
+
+list.addEventListener("click", (e) => {
+  if (e.target.closest("input[type='checkbox']")) {
+    const itemChecked = e.target.closest("li");
+    const checkboxValue = e.target.checked;
+
+    let itemFound = listArray.find(
+      (item) => item.id.toString() === itemChecked.id
+    );
+
+    itemFound.completed = checkboxValue;
+
+    renderList();
+  }
+});
+
 // TODO:
 
-// if checklist is checked, cross the item from the list
 // style app
 // add feedback for input
-// clicking on one edit will close the edit for the other item

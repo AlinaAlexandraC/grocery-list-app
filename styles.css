@@ -64,6 +64,11 @@ input.error {
   margin: 18px 0;
 }
 
+.checked {
+  text-decoration: line-through;
+  background-color: aquamarine;
+}
+
 .list-element-info {
   display: flex;
   justify-content: space-between;
