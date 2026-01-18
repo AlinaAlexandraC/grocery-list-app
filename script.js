@@ -1,9 +1,18 @@
-const nameInputField = document.querySelector("#item-name");
-const quantityInputField = document.querySelector("#item-quantity");
 const form = document.querySelector(".item-submission");
-const list = document.querySelector(".list");
+
+const floatingMessageElement = document.querySelector(".floating-message");
+
+const nameInputField = document.querySelector("#item-name");
 const inputError = document.querySelector("small");
+
+const quantityInputField = document.querySelector("#item-quantity");
 const selectUnit = document.querySelector("#select-unit");
+
+const list = document.querySelector(".list");
+
+const clearListBtn = document.querySelector(".clear-list");
+
+let setTimeoutId;
 
 const UNIT_CATALOG = {
   count: {
@@ -24,22 +33,7 @@ const UNIT_CATALOG = {
   },
 };
 
-let listArray = [
-  {
-    id: 1,
-    name: "Apples",
-    quantity: 5,
-    unit: "g",
-    completed: false,
-  },
-  {
-    id: 2,
-    name: "Carrots",
-    quantity: 8,
-    unit: "g",
-    completed: true,
-  },
-];
+let listArray = JSON.parse(localStorage.getItem("list")) || [];
 
 let nextId = listArray.length + 1;
 
@@ -61,10 +55,36 @@ let populateUnits = (parent) => {
 
 populateUnits(selectUnit);
 
+// Floating Error/ Success
+
+const setFloatingMessage = (type, message) => {
+  if (setTimeoutId) {
+    clearTimeout(setTimeoutId);
+  }
+
+  floatingMessageElement.classList.add(type);
+  floatingMessageElement.textContent = message;
+
+  setTimeoutId = setTimeout(() => {
+    floatingMessageElement.classList.remove("error", "success");
+    floatingMessageElement.textContent = "";
+    setTimeoutId = null;
+  }, 5000);
+};
+
 // Render list (for initial load and updates - add, delete and edit items)
 
 const renderList = () => {
   list.innerHTML = "";
+
+  if (listArray.length === 0) {
+    const emptyList = document.createElement("img");
+    emptyList.classList.add("empty-list");
+    emptyList.src = "./icons/empty.jpg";
+    emptyList.alt = "List is empty";
+
+    list.append(emptyList);
+  }
 
   listArray.forEach((item) => {
     const listElement = document.createElement("li");
@@ -73,8 +93,8 @@ const renderList = () => {
     <div class="list-element-info">     
       <div class="list-name-container">
         <input type="checkbox" id="item-${item.id}" name="item-${item.id}" ${
-      item.completed ? "checked" : ""
-    }/>
+          item.completed ? "checked" : ""
+        }/>
         <label for="item-${item.id}" class="item-name">${item.name}</label>
       </div>   
       <input
@@ -98,7 +118,7 @@ const renderList = () => {
       </select>
       <div class="dropdown">
         <button class="dropdown-trigger" aria-expanded="false">
-          <img src="./icons/more.svg" alt="More actions for ${item.name}">      
+          <img src=${item.completed ? "./icons/more-grey.svg" : "./icons/more.svg"} alt="More actions for ${item.name}">      
         </button>
         <div class="dropdown-menu">
           <button data-action="edit">
@@ -167,6 +187,9 @@ form.addEventListener("submit", (e) => {
   nameInputField.classList.remove("error");
   form.reset();
 
+  localStorage.setItem("list", JSON.stringify(listArray));
+  setFloatingMessage("success", "Item added to the list.");
+
   nextId++;
   renderList();
 });
@@ -212,8 +235,11 @@ list.addEventListener("click", (e) => {
     const itemToDelete = e.target.closest("li").id;
 
     listArray = listArray.filter(
-      (elementToDelete) => elementToDelete.id.toString() !== itemToDelete
+      (elementToDelete) => elementToDelete.id.toString() !== itemToDelete,
     );
+
+    localStorage.setItem("list", JSON.stringify(listArray));
+    setFloatingMessage("success", "Item deleted.");
 
     renderList();
   }
@@ -248,7 +274,7 @@ list.addEventListener("click", (e) => {
     const itemToSave = e.target.closest("li");
 
     let itemFound = listArray.find(
-      (item) => item.id.toString() === itemToSave.id
+      (item) => item.id.toString() === itemToSave.id,
     );
 
     const inputNameValue = itemToSave
@@ -272,10 +298,17 @@ list.addEventListener("click", (e) => {
       return;
     }
 
+    if (inputNameValue === "") {
+      setFloatingMessage("error", "Name field cannot be empty.");
+      return;
+    }
+
     itemFound.name = inputNameValue;
     itemFound.quantity = inputQuantityValue || "-";
     itemFound.unit = inputUnitValue || "-";
 
+    localStorage.setItem("list", JSON.stringify(listArray));
+    setFloatingMessage("success", "Item info successfully updated.");
     itemToSave.classList.remove("is-editing");
 
     renderList();
@@ -290,16 +323,27 @@ list.addEventListener("click", (e) => {
     const checkboxValue = e.target.checked;
 
     let itemFound = listArray.find(
-      (item) => item.id.toString() === itemChecked.id
+      (item) => item.id.toString() === itemChecked.id,
     );
 
     itemFound.completed = checkboxValue;
+
+    localStorage.setItem("list", JSON.stringify(listArray));
 
     renderList();
   }
 });
 
-// TODO:
+// Clear list
 
-// style app
-// add feedback for input
+clearListBtn.addEventListener("click", (e) => {
+  if (confirm("Are you sure you want to delete all items?") == true) {
+    listArray = [];
+
+    localStorage.setItem("list", JSON.stringify(listArray));
+
+    renderList();
+  } else {
+    return;
+  }
+});

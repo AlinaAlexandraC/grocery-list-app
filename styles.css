@@ -1,34 +1,143 @@
+/* GENERAL */
+
+/* 
+
+COLOR PALETTE:
+
+PAGE HEADER:
+
+Very dark cyan: #005461
+
+SECTIONS HEADERS:
+
+Dark Cyan: #018790
+
+CHECKED STATE + BUTTON HOVER:
+
+Cyan-Blue: #00B7B5
+
+LOGO & TEXT: 
+
+pale gray: #F4F4F4
+
+*/
+
+.item-submission label,
+button,
+small,
+header {
+  user-select: none;
+}
+
+h2 {
+  margin: 0;
+  background-color: #018790;
+  height: 56px;
+  color: #f4f4f4;
+  border-radius: 6px 6px 0 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input,
+select {
+  box-sizing: border-box;
+  height: 44px;
+  border-radius: 6px;
+  text-indent: 8px;
+  border: 1px solid;
+  flex: 1 1 auto;
+}
+
+label {
+  font-weight: 700;
+}
+
+.btn {
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #f4f4f4;
+  width: 200px;
+  border-radius: 6px;
+  display: block;
+  margin: 1rem auto;
+  border: none;
+  cursor: pointer;
+}
+
+/* BODY */
+
+body {
+  margin: 0;
+}
+
+/* HEADER */
+
+header {
+  height: 64px;
+  background-color: #005461;
+  display: flex;
+  align-items: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+header img {
+  width: 60px;
+}
+
+header p {
+  font-size: 1.5rem;
+  color: #f4f4f4;
+  font-weight: 700;
+}
+
+/* MAIN */
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem 0;
+  gap: 1rem;
+}
+
 /* FORM */
 
 .item-submission {
-  width: 500px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  border: 1px solid #005461;
+  width: 75%;
+  border-radius: 8px;
 }
 
 .item-name-container,
 #item-quantity-container {
   display: flex;
+  margin: 8px;
   gap: 0.5rem;
 }
 
-.item-submission input,
-#select-unit {
-  box-sizing: border-box;
-  height: 2.5rem;
-  border-radius: 6px;
-  text-indent: 8px;
-  border: 1px solid;
-  flex: 1;
+.item-name-container {
+  flex-direction: column;
+}
+
+.item-submission label {
+  margin: 0 8px;
 }
 
 .add-item {
-  height: 2.5rem;
-  width: 150px;
-  border-radius: 6px;
-  display: block;
-  margin: 1rem auto;
+  background-color: #018790;
+}
+
+.add-item:hover {
+  background-color: #00b7b5;
+  transition: all 1s ease-in;
 }
 
 /* INPUT ERROR */
@@ -46,14 +155,31 @@ input.error {
 /* LIST */
 
 .list-container {
-  border: 2px solid;
+  border: 1px solid #005461;
   border-radius: 6px;
   min-height: 100px;
-  width: 500px;
+  width: 75%;
+}
+
+.list {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .list-container h2 {
   text-align: center;
+  user-select: none;
+}
+
+.clear-list {
+  background-color: brown;
+}
+
+.empty-list {
+  width: 250px;
+  align-self: center;
 }
 
 .list-container li {
@@ -61,12 +187,19 @@ input.error {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 18px 0;
+  margin: 6px 0;
+  padding: 0 12px;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.3);
 }
 
 .checked {
   text-decoration: line-through;
-  background-color: aquamarine;
+  background-color: #00b7b5;
+  color: #f4f4f4;
+  font-weight: 700;
 }
 
 .list-element-info {
@@ -74,11 +207,23 @@ input.error {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  gap: 6px;
 }
 
 .list-name-container {
   display: flex;
+  align-items: center;
   gap: 8px;
+}
+
+.item-name {
+  width: 200px;
+}
+
+.item-quantity,
+.item-unit {
+  min-width: 150px;
+  text-align: center;
 }
 
 /* ACTIONS */
@@ -152,9 +297,36 @@ button[data-action="save"] {
   display: none;
 }
 
+.is-editing {
+  text-decoration: none;
+}
+
 .is-editing .edit-item-name,
 .is-editing .edit-item-quantity,
 .is-editing .edit-item-unit,
 .is-editing button[data-action="save"] {
   display: flex;
+}
+
+/* FLOATING MESSAGE */
+
+.floating-message {
+  min-width: 250px;
+  padding: 12px 46px;
+  border-radius: 8px;
+  color: #f4f4f4;
+  font-weight: 700;
+  text-align: center;
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
+  font-size: 1.3rem;
+}
+
+.floating-message.success {
+  background-color: #007e6e;
+}
+
+.floating-message.error {
+  background-color: brown;
 }
